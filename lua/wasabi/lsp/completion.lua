@@ -27,12 +27,32 @@ require("blink.cmp").setup({
 	},
 
 	completion = {
+		trigger = {
+			show_on_keyword = true,
+			show_on_trigger_character = true,
+			show_on_accept_on_trigger_character = true,
+		},
+
+		ghost_text = {
+			enabled = true,
+		},
+
 		accept = {
 			auto_brackets = {
 				enabled = true
 			}
 		},
+
+		list = {
+			selection = {
+				preselect = true,
+				auto_insert = false,
+			}
+		},
+
 		menu = {
+			enabled = true,
+			auto_show = true,
 			draw = {
 				columns = {
 					{ "kind_icon" }, { "label", "label_description", gap = 1 }
@@ -83,9 +103,9 @@ require("blink.cmp").setup({
 		signature = {
 			enabled = true,
 			-- TODO: Check that
-			-- window = {
-			-- 	border = "solid",
-			-- }
+			window = {
+				border = "solid",
+			}
 		},
 
 		keyword = {
@@ -93,4 +113,13 @@ require("blink.cmp").setup({
 		},
 	},
 
+	keymap = {
+		preset = "default",
+
+		["<C-p>"] = { "select_prev", "fallback" },
+		["<C-n>"] = { "select_next", "fallback" },
+		["<C-e>"] = { "hide" },
+		["<S-Tab>"] = { "select_and_accept" },
+		["<C-Space>"] = { "show" },
+	}
 });

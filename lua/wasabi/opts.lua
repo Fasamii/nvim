@@ -175,7 +175,7 @@ vim.diagnostic.config({
 	update_in_insert = false,
 	-- Sort diagnostics by severity
 	severity_sort = true,
-	-- Floating diagnostic window apperance
+	-- Floating diagnostic window appearance
 	float = {
 		focusable = false,
 		style = "minimal",
