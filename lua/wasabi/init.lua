@@ -54,7 +54,7 @@ vim.pack.add({
 	-- CMP
 	{
 		src = "https://github.com/saghen/blink.cmp",
-		build = "cargo build --release",
+		version = vim.version.range("1.8.0"),
 	},
 	{ src = "https://github.com/b0o/schemastore.nvim" },
 })
