@@ -19,7 +19,7 @@ local parsers = {
 
 ts.setup({});
 
-ts.install(parsers, { summary = true });
+ts.install(parsers, { summary = true }):wait(300000);
 
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "*",
@@ -30,3 +30,9 @@ vim.api.nvim_create_autocmd("FileType", {
 		end
 	end,
 });
+
+-- Indentation support through Treesitter
+vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+-- Fold support through Treesitter
+vim.wo[0][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+vim.wo[0][0].foldmethod = 'expr'

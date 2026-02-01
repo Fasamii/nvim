@@ -100,18 +100,19 @@ require("blink.cmp").setup({
 			}
 		},
 
-		signature = {
-			enabled = true,
-			-- TODO: Check that
-			window = {
-				border = "solid",
-			}
-		},
-
 		keyword = {
 			range = "prefix"
 		},
 	},
+
+	signature = {
+		enabled = true,
+		-- TODO: Check that
+		window = {
+			border = "solid",
+		}
+	},
+
 
 	keymap = {
 		preset = "default",
