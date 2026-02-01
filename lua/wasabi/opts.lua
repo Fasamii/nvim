@@ -5,7 +5,7 @@ vim.g.mapleader = " ";
 vim.g.maplocalleader = "~";
 -- Timeout (in milliseconds) for mapped key sequences
 -- Affects how long nvim waits after pressing <leader>
-vim.opt.timeoutlen = 300
+vim.opt.timeoutlen = 300;
 
 -- Enables full 24-bit RGB color
 vim.opt.termguicolors = true;
@@ -19,7 +19,7 @@ vim.opt.mouse = "nv";
 vim.opt.cursorline = true;
 
 -- Show absolute line number on the current line
-vim.opt.number = true
+vim.opt.number = true;
 -- Show relative line numbers on all other lines
 vim.opt.relativenumber = true;
 -- Column used to display signs (diagnostics, git, breakpoints)
@@ -84,23 +84,23 @@ vim.opt.splitright = true;
 -- Keep screen position on split
 vim.opt.splitkeep = "screen";
 
-local backup_dir = os.getenv("HOME") .. "/.backup/nvim"
-vim.fn.mkdir(backup_dir .. "/undo", "p")
-vim.fn.mkdir(backup_dir .. "/backup", "p")
-vim.fn.mkdir(backup_dir .. "/swap", "p")
+local backup_dir = os.getenv("HOME") .. "/.backup/nvim";
+vim.fn.mkdir(backup_dir .. "/undo", "p");
+vim.fn.mkdir(backup_dir .. "/backup", "p");
+vim.fn.mkdir(backup_dir .. "/swap", "p");
 
 -- Directory for persistent undo files
-vim.opt.undodir = backup_dir .. "/undo"
+vim.opt.undodir = backup_dir .. "/undo";
 -- Enables persistent undo across sessions
 vim.opt.undofile = true;
 -- Directory for backup files (~).
-vim.opt.backupdir = backup_dir .. "/backup"
+vim.opt.backupdir = backup_dir .. "/backup";
 -- Skip backup creation for
-vim.opt.backupskip = { "/tmp/*", "/private/tmp/*" }
+vim.opt.backupskip = { "/tmp/*", "/private/tmp/*" };
 -- Enables backup file creation before overwriting
 vim.opt.backup = true;
 -- Directory for swap files
-vim.opt.directory = backup_dir .. "/swap"
+vim.opt.directory = backup_dir .. "/swap";
 -- Enables swap files for crash recovery and file-lock detection
 vim.opt.swapfile = true;
 
@@ -114,11 +114,11 @@ vim.opt.spell = true;
 vim.opt.spelllang = "en_us,pl";
 
 -- Case insensitive seach
-vim.opt.ignorecase = true
+vim.opt.ignorecase = true;
 -- Case sensitive search when uppercase letters are used
-vim.opt.smartcase = true
+vim.opt.smartcase = true;
 -- Show search results while typing
-vim.opt.incsearch = true
+vim.opt.incsearch = true;
 -- Disables persistent search highlighting
 vim.opt.hlsearch = true;
 
@@ -149,12 +149,12 @@ vim.g.netrw_localrmdir = "rm -ri";
 -- 0 = no cache, 1 = moderate caching, 2 = aggressive caching
 vim.g.netrw_fastbrowse = 1;
 -- TODO:
-vim.g.netrw_altv = 1
+vim.g.netrw_altv = 1;
 
 -- TODO:
-vim.opt.completeopt = { "menu", "menuone", "noselect" }
+vim.opt.completeopt = { "menu", "menuone", "noselect" };
 -- Popup menu height
-vim.opt.pumheight = 10
+vim.opt.pumheight = 10;
 
 -- Time in milliseconds before CursorHold events and diagnostics update
 vim.opt.updatetime = 50;
@@ -204,6 +204,6 @@ vim.diagnostic.config({
 -- NOTE: Below ones are these that I'm not sure if i like
 
 -- Delays redraws during macros and scripts
-vim.opt.lazyredraw = false
+vim.opt.lazyredraw = false;
 
 vim.opt.smoothscroll = true;

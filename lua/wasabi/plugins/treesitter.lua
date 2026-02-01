@@ -1,10 +1,21 @@
 local ts = require("nvim-treesitter");
 local parsers = {
-	"c", "lua", "vim", "vimdoc", "query",
-	"markdown", "markdown_inline",
-	"rust", "python", "javascript", "typescript",
-	"html", "css", "json", "yaml", "bash",
-}
+	"c",
+	"lua",
+	-- "vim",
+	-- "vimdoc",
+	"markdown",
+	"markdown_inline",
+	"rust",
+	"python",
+	"javascript",
+	"typescript",
+	"html",
+	"css",
+	"json",
+	"yaml",
+	"bash",
+};
 
 ts.setup({});
 
