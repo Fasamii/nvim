@@ -111,7 +111,7 @@ vim.opt.spellfile = spell_dir .. "/spellfile.utf-8.add";
 -- Spell checking
 vim.opt.spell = true;
 -- Spell checking language
-vim.opt.spelllang = "en_us,pl";
+vim.opt.spelllang = "en_us";
 
 -- Case insensitive seach
 vim.opt.ignorecase = true;
@@ -180,7 +180,7 @@ vim.diagnostic.config({
 		focusable = false,
 		style = "minimal",
 		border = "solid",
-		source = "always",
+		source = true,
 		header = "",
 		prefix = "",
 		suffix = "",
@@ -198,12 +198,15 @@ vim.diagnostic.config({
 	signs = false,
 });
 
-
-
-
--- NOTE: Below ones are these that I'm not sure if i like
+vim.wo[0][0].foldmethod = 'expr'
+vim.wo[0][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 
 -- Delays redraws during macros and scripts
 vim.opt.lazyredraw = false;
 
 vim.opt.smoothscroll = true;
+
+-- TODO: Check if that is correct
+-- Indentation support through Treesitter
+vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+-- Fold support through Treesitter

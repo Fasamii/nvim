@@ -1,9 +1,20 @@
-local ts = require("nvim-treesitter");
+if vim.fn.executable("tree-sitter") ~= 1 then
+	vim.schedule(function()
+		vim.notify(
+			"Tree-sitter CLI not found!\nInstall 'tree-sitter-cli' to enable parser compilation.",
+			vim.log.levels.ERROR,
+			{ title = "Tree-sitter" }
+		)
+	end)
+end
+
 local parsers = {
+	"sql",
+	"asm",
 	"c",
 	"lua",
-	-- "vim",
-	-- "vimdoc",
+	"vim",
+	"vimdoc",
 	"markdown",
 	"markdown_inline",
 	"rust",
@@ -17,9 +28,16 @@ local parsers = {
 	"bash",
 };
 
-ts.setup({});
+local ok, ts = pcall(require, "nvim-treesitter")
+if ok then
+	local ts_path = vim.fn.stdpath("data") .. "/site";
 
-ts.install(parsers, { summary = true }):wait(300000);
+	ts.setup({
+		install_dir = ts_path,
+	});
+
+	ts.install(parsers, { summary = false });
+end
 
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "*",
@@ -30,9 +48,3 @@ vim.api.nvim_create_autocmd("FileType", {
 		end
 	end,
 });
-
--- Indentation support through Treesitter
-vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
--- Fold support through Treesitter
-vim.wo[0][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-vim.wo[0][0].foldmethod = 'expr'

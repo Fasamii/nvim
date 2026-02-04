@@ -1,11 +1,7 @@
 local M = {};
-local function set(mode, keymap, what, desc, opts)
-	opts = opts or {};
-	opts.desc = desc;
-	opts.noremap = opts.noremap ~= false;
 
-	vim.keymap.set(mode, keymap, what, opts);
-end
+local set = require("wasabi.util").set;
+local notify = require("wasabi.util").notify;
 
 -- MISC IMPORTANT
 
@@ -80,50 +76,27 @@ end, "Remove word from dictionary");
 set("n", "<leader>cd", function()
 	local current_file = vim.fn.expand("%:p:h");
 	if current_file ~= '' then
-		vim.cmd('cd ' .. current_file);
-		vim.notify("set pwd to: " .. current_file, vim.log.levels.INFO, {
-			timeout = 3000,
-		});
+		require("wasabi.util").set_pwd(current_file);
 	else
-		vim.notify("failed to set pwd", vim.log.levels.ERROR)
+		notify("failed to set pwd", vim.log.levels.ERROR)
 	end
-end, "set pwd to current file directory");
+end, "set pwd to current file directory", { silent = false });
 set("n", "<leader>cD", function()
 	local current_dir = vim.fn.getcwd();
-	vim.ui.input({
-		prompt = "Change cwd to: ",
-		default = current_dir,
-		completion = "dir",
-	}, function(input)
-		if input then
-			vim.cmd("cd " .. input);
-			vim.notify("set pwd to: " .. input, vim.log.levels.INFO, {
-				timeout = 3000,
-			});
-		end
-	end)
-end, "prompt to change pwd");
+	local pwd_path = vim.fn.input("Change cwd to: ", vim.fn.getcwd(), "dir");
+	if pwd_path then
+		require("wasabi.util").set_pwd(pwd_path);
+	end
+end, "prompt to change pwd", { silent = false });
 set("n", "<leader>cr", function()
-	local function find_git_root()
-		local current_file = vim.fn.expand("%:p:h");
-		local git_root = vim.fn.systemlist("git -C " .. vim.fn.shellescape(current_file) .. " rev-parse --show-toplevel")
-			[1];
-		if vim.v.shell_error == 0 then
-			return git_root;
-		end
-		return nil;
-	end
-
-	local git_root = find_git_root();
+	local current_file = vim.fn.expand("%:p:h");
+	local git_root = require("wasabi.util").find_git_root(current_file);
 	if git_root then
-		vim.cmd('cd ' .. git_root);
-		vim.notify("set pwd to: " .. git_root, vim.log.levels.INFO, {
-			timeout = 3000,
-		});
+		require("wasabi.util").set_pwd(git_root);
 	else
-		vim.notify("failed to set pwd", vim.log.levels.ERROR)
+		notify("failed to set pwd", vim.log.levels.ERROR)
 	end
-end, "set pwd to git root");
+end, "set pwd to git root", { silent = false });
 
 function M.telescope(builtin)
 	-- FILES
