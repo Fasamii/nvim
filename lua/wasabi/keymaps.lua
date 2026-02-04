@@ -83,7 +83,7 @@ set("n", "<leader>cd", function()
 end, "set pwd to current file directory", { silent = false });
 set("n", "<leader>cD", function()
 	local current_dir = vim.fn.getcwd();
-	local pwd_path = vim.fn.input("Change cwd to: ", vim.fn.getcwd(), "dir");
+	local pwd_path = vim.fn.input("Change cwd to: ", current_dir, "dir");
 	if pwd_path then
 		require("wasabi.util").set_pwd(pwd_path);
 	end
