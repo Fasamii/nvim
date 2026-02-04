@@ -1,1 +1,1 @@
-require("wasabi")
+require("wasabi");

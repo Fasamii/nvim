@@ -1,4 +1,8 @@
 require("mason").setup({
+	log_level = vim.log.levels.WARN,
+
+	max_concurrent_installers = 4,
+
 	ui = {
 		border = "solid",
 		width = 0.8,
@@ -9,7 +13,6 @@ require("mason").setup({
 			package_unsinstalled = "󰅗 ",
 		},
 	},
-	max_concurrent_installers = 4,
 });
 
 require("mason-lspconfig").setup({
@@ -17,15 +20,18 @@ require("mason-lspconfig").setup({
 		"bashls",
 		"rust_analyzer",
 		"clangd",
-		"ts_server",
+		"ts_ls",
+		"js_ls",
 		"pyright",
 		"lua_ls",
 		"marksman",
 		"jsonls",
 		"yamlls",
 		"html",
+		"emmet_language_server",
 		"cssls",
 	},
+
 	automatic_installation = true,
 	automatic_enable = true,
 });

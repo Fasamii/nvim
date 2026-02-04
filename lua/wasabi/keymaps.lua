@@ -1,32 +1,10 @@
 local M = {};
-
-local KEYMAP_REGISTRY = {}
 local function set(mode, keymap, what, desc, opts)
-	local modes;
-	if type(mode) == "string" then
-		modes = {};
-		for m in mode:gmatch("[^,%s]+") do
-			table.insert(modes, m);
-		end
-	else
-		modes = mode;
-	end
-
-	KEYMAP_REGISTRY[keymap] = KEYMAP_REGISTRY[keymap] or {}
-	for _, m in ipairs(modes) do
-		for _, existing in ipairs(KEYMAP_REGISTRY[keymap]) do
-			if existing == m then
-				-- error(string.format("Keymap '%s' already registered in mode '%s'", keymap, m))
-			end
-		end
-		table.insert(KEYMAP_REGISTRY[keymap], m)
-	end
-
-	local opts = opts or {};
+	opts = opts or {};
 	opts.desc = desc;
 	opts.noremap = opts.noremap ~= false;
 
-	vim.keymap.set(modes, keymap, what, opts);
+	vim.keymap.set(mode, keymap, what, opts);
 end
 
 -- MISC IMPORTANT
@@ -59,8 +37,8 @@ set("n", "<leader>rb", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
 
 -- SPLITS
 
-set("n", "<leader>sv", "<C-w>v", "split vertically");
-set("n", "<leader>sp", "<C-w>h", "split horizontally");
+set("n", "<leader>sv", "<C-w>s", "split vertically");
+set("n", "<leader>sp", "<C-w>v", "split horizontally");
 set("n", "<leader>sd", "<cmd>close<CR>", "close current split");
 set("n", "<leader>sh", "<C-w>h", "focus left split");
 set("n", "<leader>sj", "<C-w>j", "focus bottom split");
@@ -97,6 +75,56 @@ set("n", "zr", function()
 	vim.cmd("normal! zug");
 end, "Remove word from dictionary");
 
+-- PWD
+
+set("n", "<leader>cd", function()
+	local current_file = vim.fn.expand("%:p:h");
+	if current_file ~= '' then
+		vim.cmd('cd ' .. current_file);
+		vim.notify("set pwd to: " .. current_file, vim.log.levels.INFO, {
+			timeout = 3000,
+		});
+	else
+		vim.notify("failed to set pwd", vim.log.levels.ERROR)
+	end
+end, "set pwd to current file directory");
+set("n", "<leader>cD", function()
+	local current_dir = vim.fn.getcwd();
+	vim.ui.input({
+		prompt = "Change cwd to: ",
+		default = current_dir,
+		completion = "dir",
+	}, function(input)
+		if input then
+			vim.cmd("cd " .. input);
+			vim.notify("set pwd to: " .. input, vim.log.levels.INFO, {
+				timeout = 3000,
+			});
+		end
+	end)
+end, "prompt to change pwd");
+set("n", "<leader>cr", function()
+	local function find_git_root()
+		local current_file = vim.fn.expand("%:p:h");
+		local git_root = vim.fn.systemlist("git -C " .. vim.fn.shellescape(current_file) .. " rev-parse --show-toplevel")
+			[1];
+		if vim.v.shell_error == 0 then
+			return git_root;
+		end
+		return nil;
+	end
+
+	local git_root = find_git_root();
+	if git_root then
+		vim.cmd('cd ' .. git_root);
+		vim.notify("set pwd to: " .. git_root, vim.log.levels.INFO, {
+			timeout = 3000,
+		});
+	else
+		vim.notify("failed to set pwd", vim.log.levels.ERROR)
+	end
+end, "set pwd to git root");
+
 function M.telescope(builtin)
 	-- FILES
 	set("n", "<leader>fs", builtin.find_files, "find files");
@@ -125,66 +153,57 @@ end
 
 -- TODO: Review that keymaps
 function M.todo_comments()
-	vim.keymap.set("n", "<leader>tl", "<cmd>TodoTelescope<cr>", { desc = "list all labels" });
-	vim.keymap.set("n", "<leader>tfl", "<cmd>TodoTelescope keywords=FIX,FIXME,BUG,FIXIT,ISSUE,ERR<cr>",
-		{ desc = "list all FIXME labels" });
-	vim.keymap.set("n", "<leader>ttl", "<cmd>TodoTelescope keywords=TODO,LATER<cr>", { desc = "list all TODO labels" });
-	vim.keymap.set("n", "<leader>twl", "<cmd>TodoTelescope keywords=WARN,WARNING,XXX<cr>",
-		{ desc = "list all WARN labels" });
-	vim.keymap.set("n", "<leader>til", "<cmd>TodoTelescope keywords=NOTE,INFO<cr>", { desc = "list all NOTE labels" });
-	vim.keymap.set("n", "<leader>tol", "<cmd>TodoTelescope keywords=PERF,OPTIM,PERFORMANCE,OPTIMIZE<cr>",
-		{ desc = "list all PERF labels" });
-	vim.keymap.set("n", "<leader>tel", "<cmd>TodoTelescope keywords=TEST,TESTING,PASSED,FAILED<cr>",
-		{ desc = "list all TEST labels" });
+	set("n", "<leader>tl", "<cmd>TodoTelescope<cr>", "list all labels");
+	set("n", "<leader>tfl", "<cmd>TodoTelescope keywords=FIX,FIXME,BUG,FIXIT,ISSUE,ERR<cr>", "list all FIXME labels");
+	set("n", "<leader>ttl", "<cmd>TodoTelescope keywords=TODO,LATER<cr>", "list all TODO labels");
+	set("n", "<leader>twl", "<cmd>TodoTelescope keywords=WARN,WARNING,XXX<cr>", "list all WARN labels");
+	set("n", "<leader>til", "<cmd>TodoTelescope keywords=NOTE,INFO<cr>", "list all NOTE labels");
+	set("n", "<leader>tol", "<cmd>TodoTelescope keywords=PERF,OPTIM,PERFORMANCE,OPTIMIZE<cr>", "list all PERF labels");
+	set("n", "<leader>tel", "<cmd>TodoTelescope keywords=TEST,TESTING,PASSED,FAILED<cr>", "list all TEST labels");
 
-	vim.keymap.set("n", "<leader>tn", function() require("todo-comments").jump_next() end, { desc = "Next label" });
-	vim.keymap.set("n", "<leader>tp", function() require("todo-comments").jump_prev() end, { desc = "Previous label" });
+	set("n", "<leader>tn", function() require("todo-comments").jump_next() end, "Next label");
+	set("n", "<leader>tp", function() require("todo-comments").jump_prev() end, "Previous label");
 
-	vim.keymap.set("n", "<leader>tfn",
+	set("n", "<leader>tfn",
 		function() require("todo-comments").jump_next({ keywords = { "FIX", "FIXME", "BUG", "FIXIT", "ISSUE", "ERR" } }) end,
-		{ desc = "Next FIXME label" });
-	vim.keymap.set("n", "<leader>tfp",
+		"Next FIXME label");
+	set("n", "<leader>tfp",
 		function() require("todo-comments").jump_prev({ keywords = { "FIX", "FIXME", "BUG", "FIXIT", "ISSUE", "ERR" } }) end,
-		{ desc = "Prev FIXME label" });
+		"Prev FIXME label");
 
-	vim.keymap.set("n", "<leader>ttn",
-		function() require("todo-comments").jump_next({ keywords = { "TODO", "LATER" } }) end,
-		{ desc = "Next TODO label" });
-	vim.keymap.set("n", "<leader>ttp",
-		function() require("todo-comments").jump_prev({ keywords = { "TODO", "LATER" } }) end,
-		{ desc = "Prev TODO label" });
+	set("n", "<leader>ttn", function() require("todo-comments").jump_next({ keywords = { "TODO", "LATER" } }) end,
+		"Next TODO label");
+	set("n", "<leader>ttp", function() require("todo-comments").jump_prev({ keywords = { "TODO", "LATER" } }) end,
+		"Prev TODO label");
 
-	vim.keymap.set("n", "<leader>twn",
-		function() require("todo-comments").jump_next({ keywords = { "WARN", "WARNING", "XXX" } }) end,
-		{ desc = "Next WARN label" });
-	vim.keymap.set("n", "<leader>twp",
-		function() require("todo-comments").jump_prev({ keywords = { "WARN", "WARNING", "XXX" } }) end,
-		{ desc = "Prev WARN label" });
+	set("n", "<leader>twn",
+		function() require("todo-comments").jump_next({ keywords = { "WARN", "WARNING", "XXX" } }) end, "Next WARN label");
+	set("n", "<leader>twp",
+		function() require("todo-comments").jump_prev({ keywords = { "WARN", "WARNING", "XXX" } }) end, "Prev WARN label");
 
-	vim.keymap.set("n", "<leader>tin",
-		function() require("todo-comments").jump_next({ keywords = { "NOTE", "INFO" } }) end,
-		{ desc = "Next NOTE label" });
-	vim.keymap.set("n", "<leader>tip",
-		function() require("todo-comments").jump_prev({ keywords = { "NOTE", "INFO" } }) end,
-		{ desc = "Prev NOTE label" });
+	set("n", "<leader>tin", function() require("todo-comments").jump_next({ keywords = { "NOTE", "INFO" } }) end,
+		"Next NOTE label");
+	set("n", "<leader>tip", function() require("todo-comments").jump_prev({ keywords = { "NOTE", "INFO" } }) end,
+		"Prev NOTE label");
 
-	vim.keymap.set("n", "<leader>ton",
+	set("n", "<leader>ton",
 		function() require("todo-comments").jump_next({ keywords = { "PERF", "OPTIM", "PERFORMANCE", "OPTIMIZE" } }) end,
-		{ desc = "Next PERF label" });
-	vim.keymap.set("n", "<leader>top",
+		"Next PERF label");
+	set("n", "<leader>top",
 		function() require("todo-comments").jump_prev({ keywords = { "PERF", "OPTIM", "PERFORMANCE", "OPTIMIZE" } }) end,
-		{ desc = "Prev PERF label" });
+		"Prev PERF label");
 
-	vim.keymap.set("n", "<leader>ten",
+	set("n", "<leader>ten",
 		function() require("todo-comments").jump_next({ keywords = { "TEST", "TESTING", "PASSED", "FAILED" } }) end,
-		{ desc = "Next TEST label" });
-	vim.keymap.set("n", "<leader>tep",
+		"Next TEST label");
+	set("n", "<leader>tep",
 		function() require("todo-comments").jump_prev({ keywords = { "TEST", "TESTING", "PASSED", "FAILED" } }) end,
-		{ desc = "Prev TEST label" });
+		"Prev TEST label");
 end
 
 function M.auto_session()
-	vim.keymap.set("n", "<leader>rs", "<cmd>SessionRestore<CR>", { desc = "Restore session for cwd" });
+	set("n", "<leader>ss", "<cmd>Autosession save<CR>", "save session");
+	set("n", "<leader>rs", "<cmd>SessionRestore<CR>", "restore session");
 end
 
 function M.lsp_attach(bufnr)
@@ -203,23 +222,21 @@ function M.lsp_attach(bufnr)
 	buf_set("n", "<C-k>", vim.lsp.buf.signature_help, "show signature help")
 	-- ACTIONS
 	buf_set("n", "<leader>ca", vim.lsp.buf.code_action, "code action")
-	buf_set("n", "<leader>cr", vim.lsp.buf.rename, "rename symbol")
+	-- buf_set("n", "<leader>cr", vim.lsp.buf.rename, "rename symbol")
 	buf_set("n", "<leader>cf", function()
 		vim.lsp.buf.format({ async = true })
 	end, "format document")
 
 	-- DIAGNOSTICS
-	buf_set("n", "[d", vim.diagnostic.goto_prev, "previous diagnostic")
-	buf_set("n", "]d", vim.diagnostic.goto_next, "next diagnostic")
-	buf_set("n", "<leader>cd", vim.diagnostic.open_float, "show diagnostic")
+	-- buf_set("n", "<leader>cd", vim.diagnostic.open_float, "show diagnostic")
 	buf_set("n", "<leader>cq", vim.diagnostic.setloclist, "diagnostics to loclist")
 
 	-- WORKSPACE
 	buf_set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, "add workspace folder")
 	buf_set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, "remove workspace folder")
-	buf_set("n", "<leader>wl", function()
-		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-	end, "list workspace folders")
+	-- buf_set("n", "<leader>wl", function()
+	-- 	print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+	-- end, "list workspace folders")
 end
 
 return M;

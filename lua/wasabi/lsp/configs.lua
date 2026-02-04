@@ -3,7 +3,7 @@ return {
 		settings = {
 			["rust-analyzer"] = {
 				checkOnSave = {
-
+					enable = true,
 					command = "clippy",
 					extraArgs = { "--all", "--", "-W", "clippy::all" },
 				},

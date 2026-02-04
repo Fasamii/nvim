@@ -29,6 +29,8 @@ vim.pack.add({
 	{ src = "https://github.com/Fasamii/sobsob.nvim" },
 	-- Treesitter
 	{ src = "https://github.com/nvim-treesitter/nvim-treesitter" },
+	-- Injections
+	{ src = "https://github.com/Fasamii/embed.nvim" },
 	-- Icons dependency for: [ "Telescope", "Lualine" ]
 	{ src = "https://github.com/nvim-tree/nvim-web-devicons" },
 	-- Lualine
@@ -72,5 +74,6 @@ require("wasabi.plugins.gitsigns");
 require("wasabi.plugins.auto-session");
 require("numb").setup();
 require("wasabi.plugins.markdown");
+
 
 require("wasabi.lsp");
