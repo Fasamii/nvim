@@ -1,41 +1,10 @@
 require("lualine").setup({
 	options = {
 		icons_enabled = true,
-		theme = {
-			normal = {
-				a = "LL_N_A",
-				b = "LL_N_B",
-				c = "LL_N_C",
-			},
-			insert = {
-				a = "LL_I_A",
-				b = "LL_I_B",
-				c = "LL_I_C",
-			},
-			visual = {
-				a = "LL_V_A",
-				b = "LL_V_B",
-				c = "LL_V_C",
-			},
-			replace = {
-				a = "LL_R_A",
-				b = "LL_R_B",
-				c = "LL_R_C",
-			},
-			command = {
-				a = "LL_C_A",
-				b = "LL_C_B",
-				c = "LL_C_C",
-			},
-			inactive = {
-				a = "LL_X_A",
-				b = "LL_X_B",
-				c = "LL_X_C",
-			},
-		},
+		theme = "sobsob",
 
-		component_separators = { left = "", right = ""},
-		section_separators = { left = "┃", right = "┃"},
+		component_separators = { left = "", right = "" },
+		section_separators = { left = "┃", right = "┃" },
 	},
 
 	ignore_focus = {},
@@ -58,7 +27,7 @@ require("lualine").setup({
 					return string.sub(str, 1, 1);
 				end,
 				on_click = function(clicksCount, btn, mod)
-					print("haiiii :3");
+					print("haiiii :3 x");
 				end,
 			},
 		},
@@ -122,7 +91,7 @@ require("lualine").setup({
 		lualine_z = {
 			{
 				"progress",
-				padding = { left = 1, right = 1},
+				padding = { left = 1, right = 1 },
 			},
 		},
 	},
@@ -130,9 +99,9 @@ require("lualine").setup({
 	inactive_sections = {
 		lualine_a = {},
 		lualine_b = {},
-		lualine_c = {"filename"},
-		lualine_x = {"filetype"},
-		lualine_y = {"encoding"},
+		lualine_c = { "filename" },
+		lualine_x = { "filetype" },
+		lualine_y = { "encoding" },
 		lualine_z = {}
 	},
 
