@@ -1,3 +1,4 @@
+-- TODO: Read usage for gitsigns
 require("gitsigns").setup({
 	signs                        = {
 		add          = { text = "" },
@@ -22,7 +23,7 @@ require("gitsigns").setup({
 	word_diff                    = false,
 	watch_gitdir                 = { follow_files = true },
 	auto_attach                  = true,
-	attach_to_untracked          = false,
+	attach_to_untracked          = true,
 	current_line_blame           = true,
 	current_line_blame_opts      = {
 		virt_text = true,

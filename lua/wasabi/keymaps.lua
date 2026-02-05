@@ -98,11 +98,27 @@ set("n", "<leader>cr", function()
 	end
 end, "set pwd to git root", { silent = false });
 
+if vim.g.neovide then
+	local change_scale_factor = function(delta)
+		vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
+	end
+
+	set("n", "<C-0>", function()
+		vim.g.neovide_scale_factor = 1.0;
+	end, "reset scale factor (neovide)");
+	set("n", "<C-=>", function()
+		change_scale_factor(1.25)
+	end, "increase scale factor (neovide)");
+	set("n", "<C-->", function()
+		change_scale_factor(1 / 1.25)
+	end, "decrease scale factor (neovide)");
+end
+
 function M.telescope(builtin)
 	-- FILES
 	set("n", "<leader>fs", builtin.find_files, "find files");
 	set("n", "<leader>fp", builtin.git_files, "find files in git repo");
-	set("n", "<leader>fo", builtin.oldfiles, "find recent files");
+	set("n", "<leader>fl", builtin.oldfiles, "find recent files");
 	-- TEXT
 	set("n", "<leader>fg", builtin.live_grep, "find Grep");
 	-- SPELL

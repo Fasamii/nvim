@@ -72,6 +72,10 @@
     "todo-comments.nvim": {
       "rev": "31e3c38ce9b29781e4422fc0322eb0a21f4e8668",
       "src": "https://github.com/folke/todo-comments.nvim"
+    },
+    "vim-startuptime": {
+      "rev": "b6f0d93f6b8cf6eee0b4c94450198ba2d6a05ff6",
+      "src": "https://github.com/dstein64/vim-startuptime.git"
     }
   }
 }

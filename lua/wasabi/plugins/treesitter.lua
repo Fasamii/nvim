@@ -9,23 +9,35 @@ if vim.fn.executable("tree-sitter") ~= 1 then
 end
 
 local parsers = {
-	"sql",
-	"asm",
-	"c",
-	"lua",
 	"vim",
 	"vimdoc",
-	"markdown",
-	"markdown_inline",
-	"rust",
+	"sql",
+	"query",
+	"regex",
+
+	"html",
+	"css",
+	"jsx",
+	"tsx",
+
+	"bash",
+	"lua",
+	"luadoc",
 	"python",
 	"javascript",
 	"typescript",
-	"html",
-	"css",
+
+	"asm",
+	"c",
+	"rust",
+	"go",
+
 	"json",
 	"yaml",
-	"bash",
+	"toml",
+
+	"markdown",
+	"markdown_inline",
 };
 
 local ok, ts = pcall(require, "nvim-treesitter")

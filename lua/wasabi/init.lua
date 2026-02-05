@@ -59,6 +59,10 @@ vim.pack.add({
 		version = vim.version.range("1.8.0"),
 	},
 	{ src = "https://github.com/b0o/schemastore.nvim" },
+
+	-- Startup time measuring
+	-- (n)vim --startuptime logfile
+	{ src = "https://github.com/dstein64/vim-startuptime.git" },
 })
 
 vim.cmd.colorscheme("sobsob");
@@ -74,6 +78,5 @@ require("wasabi.plugins.gitsigns");
 require("wasabi.plugins.auto-session");
 require("numb").setup();
 require("wasabi.plugins.markdown");
-
 
 require("wasabi.lsp");

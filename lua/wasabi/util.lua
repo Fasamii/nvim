@@ -34,4 +34,8 @@ function M.set_pwd(path)
 	end
 end
 
+function M.create_augroup(name)
+	return vim.api.nvim_create_augroup("augroup_" .. name, { clear = true })
+end
+
 return M;

@@ -21,7 +21,6 @@ require("mason-lspconfig").setup({
 		"rust_analyzer",
 		"clangd",
 		"ts_ls",
-		"js_ls",
 		"pyright",
 		"lua_ls",
 		"marksman",

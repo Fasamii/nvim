@@ -1,53 +1,122 @@
+local mode_match = {
+	["INSERT"]      = "I",
+	["NORMAL"]      = "N",
+	["VISUAL"]      = "V",
+	["V-LINE"]      = "Vl",
+	["V-BLOCK"]     = "Vb",
+	["REPLACE"]     = "R",
+	["REPLACE (V)"] = "Rv",
+	["SELECT"]      = "S",
+	["S-LINE"]      = "Sl",
+	["S-BLOCK"]     = "Sb",
+	["COMMAND"]     = "C",
+	["EX"]          = "X",
+	["OP-PENDING"]  = "O",
+	["TERMINAL"]    = "T",
+}
+
 require("lualine").setup({
 	options = {
 		icons_enabled = true,
-		theme = "sobsob",
+		theme = "auto",
 
 		component_separators = { left = "", right = "" },
 		section_separators = { left = "┃", right = "┃" },
-	},
+		disable_filetypes = {
+			statusline = {},
+			winbar = {},
+		},
+		ignore_focus = {},
+		always_divide_middle = true,
+		always_show_tabline = true,
+		globalstatus = false,
+		refresh = {
+			statusline = 1000,
+			tabline = 1000,
+			winbar = 1000,
+			refresh_time = 16, --  60
+			events = {
+				"WinEnter",
+				"BufEnter",
+				"BufWritePost",
+				"SessionLoadPost",
+				"FileChangedShellPost",
+				"VimResized",
+				"Filetype",
+				"CursorMoved",
+				"CursorMovedI",
+				"ModeChanged",
+			}
+		}
 
-	ignore_focus = {},
-	always_divide_middle = true,
-	always_show_tabline = true,
-	refresh = {
-		statusline = 100,
-		tabline = 100,
-		winbar = 100,
 	},
 
 	sections = {
 		lualine_a = {
 			{
 				"mode",
-				icons_enabled = false,
 				draw_empty = true,
+				icons_enabled = false,
 				padding = 1,
-				fmt = function(str, obj)
-					return string.sub(str, 1, 1);
-				end,
-				on_click = function(clicksCount, btn, mod)
-					print("haiiii :3 x");
+				fmt = function(str) return mode_match[str] or string.sub(str, 1, 1); end,
+				on_click = function(_, _, _)
+					print("haiiii :3");
 				end,
 			},
 		},
 		lualine_b = {
-			"diagnostics",
 			{
-				-- ctrl - l <- to disable search
 				"searchcount",
 				maxcount = 999,
 				timeout = 1,
 			},
-			"branch",
+
+			{
+				"filename",
+				path = 4,
+				newfile_status = true,
+				file_status = true,
+				symbols = {
+					unnamed = "[no name]",
+					modified = "󰏫 ", -- 󰏬
+					readonly = " ", -- 󰿋
+					newfile = "󰐖 ",
+				},
+			},
+		},
+
+		lualine_c = {
+			{
+				"lsp_status",
+				icon = '',
+				symbols = {
+					spinner = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' },
+					done = '',
+					separator = ',',
+				},
+				ignore_lsp = { "null-ls" },
+				show_name = true,
+			},
+			{
+				"diagnostics",
+				-- TODO: Check if that is automatic and set that
+				-- sources = {},
+				update_in_insert = false,
+				colored = true,
+				always_visible = false,
+				symbols = {
+					info = 'I-',
+					hint = 'H-',
+					warn = 'W-',
+					error = 'E-',
+				},
+			},
+		},
+
+		lualine_x = {
 			{
 				"diff",
 				colored = true,
-				diff_color = {
-					added = "GitAdd",
-					modified = "GitMod",
-					removed = "GitDel",
-				},
 				symbols = {
 					added = "+",
 					modified = "~",
@@ -55,31 +124,8 @@ require("lualine").setup({
 					source = false,
 				},
 			},
-		},
-		lualine_c = {
 			{
-				"filename",
-				file_status = true,
-				newfile_status = true,
-				path = 4,
-				symbols = {
-					modified = "󰏬 ",
-					readonly = "󰿋 ",
-					unnamed = "no name",
-					newfile = "󰐖 ",
-				},
-			},
-		},
-
-		lualine_x = {
-			{
-				"filetype",
-				colored = true,
-				icon_only = false,
-				icon = { align = "left" },
-				filetype_names = {
-					alpha = "menu",
-				},
+				"branch",
 			},
 		},
 		lualine_y = {
@@ -96,12 +142,13 @@ require("lualine").setup({
 		},
 	},
 
+	-- TODO: Set inactive section
 	inactive_sections = {
 		lualine_a = {},
 		lualine_b = {},
-		lualine_c = { "filename" },
-		lualine_x = { "filetype" },
-		lualine_y = { "encoding" },
+		lualine_c = {},
+		lualine_x = {},
+		lualine_y = {},
 		lualine_z = {}
 	},
 
