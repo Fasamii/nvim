@@ -6,6 +6,7 @@ local notify = require("wasabi.util").notify;
 -- MISC IMPORTANT
 
 set({ "n", "v" }, "<Space>", "<Nop>", "Remove any action <Space> had", { silent = true });
+set("n", "<Enter>", "i<Enter><Esc>^", "Enter behaviour from insert in normal mode");
 
 -- GENERAL EDITING
 
@@ -16,6 +17,8 @@ set("v", "J", ":m '>+1<CR>gv-gv", "moves lines down in visual mode");
 
 set("v", "<", "<gv", "indent right without removing highlight");
 set("v", ">", ">gv", "indent right without removing highlight");
+set("n", "co", "o<Esc>Vcx<Esc><cmd>normal gcc<cr>fxa<bs>", "add comment below");
+set("n", "cO", "O<Esc>Vcx<Esc><cmd>normal gcc<cr>fxa<bs>", "add comment above");
 
 -- BUFFER OPERATIONS
 
@@ -114,11 +117,71 @@ if vim.g.neovide then
 	end, "decrease scale factor (neovide)");
 end
 
+function M.treesitter(select)
+	set({ "x", "o" }, "af", function()
+		select.select_textobject("@function.outer", "textobjects")
+	end, "Select outer function")
+	set({ "x", "o" }, "if", function()
+		select.select_textobject("@function.inner", "textobjects")
+	end, "Select inner function")
+
+	set({ "x", "o" }, "ac", function()
+		select.select_textobject("@class.outer", "textobjects")
+	end, "Select outer class")
+	set({ "x", "o" }, "ic", function()
+		select.select_textobject("@class.inner", "textobjects")
+	end, "Select inner class")
+
+	set({ "x", "o" }, "aa", function()
+		select.select_textobject("@parameter.outer", "textobjects")
+	end, "Select outer parameter")
+	set({ "x", "o" }, "ia", function()
+		select.select_textobject("@parameter.inner", "textobjects")
+	end, "Select inner parameter")
+
+	set({ "x", "o" }, "ai", function()
+		select.select_textobject("@conditional.outer", "textobjects")
+	end, "Select outer conditional")
+	set({ "x", "o" }, "ii", function()
+		select.select_textobject("@conditional.inner", "textobjects")
+	end, "Select inner conditional")
+
+	set({ "x", "o" }, "al", function()
+		select.select_textobject("@loop.outer", "textobjects")
+	end, "Select outer loop")
+	set({ "x", "o" }, "il", function()
+		select.select_textobject("@loop.inner", "textobjects")
+	end, "Select inner loop")
+
+	set({ "x", "o" }, "ab", function()
+		select.select_textobject("@block.outer", "textobjects")
+	end, "Select outer block")
+	set({ "x", "o" }, "ib", function()
+		select.select_textobject("@block.inner", "textobjects")
+	end, "Select inner block")
+
+	set({ "x", "o" }, "a/", function()
+		select.select_textobject("@comment.outer", "textobjects")
+	end, "Select outer comment")
+	set({ "x", "o" }, "i/", function()
+		select.select_textobject("@comment.inner", "textobjects")
+	end, "Select inner comment")
+
+	set({ "x", "o" }, "as", function()
+		select.select_textobject("@local.scope", "locals")
+	end, "Select scope")
+end
+
 function M.telescope(builtin)
 	-- FILES
-	set("n", "<leader>fs", builtin.find_files, "find files");
+	set("n", "<leader>fP", builtin.find_files, "find files");
 	set("n", "<leader>fp", builtin.git_files, "find files in git repo");
-	set("n", "<leader>fl", builtin.oldfiles, "find recent files");
+
+	set("n", "<leader>fd", builtin.diagnostics, "Find diagnostics");
+
+	set("n", "\\\\", builtin.buffers, "List open buffers");
+
+	set("n", "<leader>fr", builtin.oldfiles, "find recent files");
 	-- TEXT
 	set("n", "<leader>fg", builtin.live_grep, "find Grep");
 	-- SPELL

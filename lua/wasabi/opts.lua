@@ -123,7 +123,11 @@ vim.opt.incsearch = true;
 vim.opt.hlsearch = true;
 
 -- Clipboard integration with system clipboard
-vim.opt.clipboard = "unnamedplus";
+-- TODO: Check the startup time difference
+-- PERF: Schedule to reduce startup time
+vim.schedule(function()
+	vim.opt.clipboard = "unnamedplus";
+end)
 
 -- Draws a vertical guideline
 -- Accepts comma-separated list: "80,100"
@@ -157,15 +161,25 @@ vim.opt.completeopt = { "menu", "menuone", "noselect" };
 vim.opt.pumheight = 10;
 
 -- Time in milliseconds before CursorHold events and diagnostics update
-vim.opt.updatetime = 50;
+vim.opt.updatetime = 20;
 -- LSP diagnostics config
 vim.diagnostic.config({
+	severity_sort = true,
 	-- Inline virtual text diagnostics
 	virtual_text = {
 		severity = { max = vim.diagnostic.severity.WARN },
 		source = "if_many",
+		spacing = 2,
+		format = function(diag)
+			return diag.message:gsub("%.$", ""); -- remove trailing `.` from lua_ls
+		end,
 		prefixx = "[!]",
-		spacing = 4,
+		suffix = function(diag)
+			if not diag then return "" end
+			local codeOrSource = (tostring(diag.code or diag.source or ""))
+			if codeOrSource == "" then return "" end
+			return (" [%s]"):format(codeOrSource:gsub("%.$", ""))
+		end,
 	},
 	-- Full-width virtual lines
 	virtual_lines = { severity = { min = vim.diagnostic.severity.ERROR } },
@@ -184,19 +198,25 @@ vim.diagnostic.config({
 		header = "",
 		prefix = "",
 		suffix = "",
+		close_events = {
+			"CursorMoved",
+			"TextChanged", -- leave out "TextChangedI" to continue showing diagnostics while typing
+			"BufHidden", -- fix window persisting on buffer switch (not `BufLeave` so float can be entered)
+			"LspDetach", -- fix window persisting when restarting LSP
+		}
 	},
-
-	-- signs = {
-	-- 	text = {
-	-- 		[vim.diagnostic.severity.ERROR] = "E",
-	-- 		[vim.diagnostic.severity.WARN] = "W",
-	-- 		[vim.diagnostic.severity.INFO] = "i",
-	-- 		[vim.diagnostic.severity.HINT] = "H",
-	-- 	},
-	-- },
-	-- Gutter signs
 	signs = false,
 });
+
+-- signs = {
+-- 	text = {
+-- 		[vim.diagnostic.severity.ERROR] = "E",
+-- 		[vim.diagnostic.severity.WARN] = "W",
+-- 		[vim.diagnostic.severity.INFO] = "i",
+-- 		[vim.diagnostic.severity.HINT] = "H",
+-- 	},
+-- },
+-- Gutter signs
 
 if vim.g.neovide then
 	vim.g.neovide_confirm_quit = false;
@@ -278,3 +298,6 @@ vim.opt.smoothscroll = true;
 -- Indentation support through Treesitter
 vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()";
 -- Fold support through Treesitter
+
+-- TODO: Check what that is
+vim.o.shada = "'100,<50,s10,:1000,/100,@100,h";

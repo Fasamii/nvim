@@ -1,28 +1,142 @@
 require("blink.cmp").setup({
+	-- TODO: Find a way to put that in keymaps.lua file
+	keymap = {
+		preset = "default",
+
+		["<C-p>"] = { "select_prev", "fallback" },
+		["<C-n>"] = { "select_next", "fallback" },
+		["<C-e>"] = { "hide" },
+		["<S-Tab>"] = { "select_and_accept" },
+		["<C-Space>"] = { "show" },
+	},
+
 	appearance = {
 		use_nvim_cmp_as_default = true,
 		nerd_font_variant = "mono",
 	},
 
 	fuzzy = {
-		implementation = "prefer_rust",
+		implementation = "prefer_rust_with_warning",
 	},
 
 	sources = {
-		default = { "lsp", "path", "buffer" },
+		default = { "lsp", "path", "buffer", "env", "datword", "latex", "git" },
 		providers = {
 			lsp = {
 				name = "LSP",
-				module = "blink.cmp.sources.lsp"
+				module = "blink.cmp.sources.lsp",
+				score_offset = 100,
 			},
+
 			path = {
 				name = "Path",
-				module = "blink.cmp.sources.path"
+				module = "blink.cmp.sources.path",
+				score_offset = 50,
 			},
+
 			buffer = {
-				name = "Buffer",
-				module = "blink.cmp.sources.buffer"
-			}
+				score_offset = 25,
+				opts = {
+					get_bufnrs = function()
+						return vim.tbl_filter(function(bufnr)
+							return vim.bo[bufnr].buftype == ""
+						end, vim.api.nvim_list_bufs())
+					end,
+				},
+			},
+
+			env = {
+				name = "env",
+				module = "blink-cmp-env",
+				score_offset = 10,
+				opts = {
+					item_kind = require("blink.cmp.types").CompletionItemKind.Variable, -- TODO: Check if Value isn't more suitable
+					show_braces = false,
+					show_documentation_window = true,
+				}
+			},
+
+			datword = {
+				name = "Word",
+				module = "blink-cmp-dat-word",
+				score_offset = 5,
+				opts = {
+					spellsuggest = true,
+					paths = {
+						"~/.config/nvim/google-10000-english/google-10000-english.txt",
+					},
+				},
+			},
+
+			latex = {
+				name = "Latex",
+				module = "blink-cmp-latex",
+				opts = {
+					-- set to true to insert the latex command instead of the symbol
+					insert_command = true,
+				},
+			},
+
+			git = {
+				module = "blink-cmp-git",
+				name = "Git",
+				enabled = function()
+					return vim.tbl_contains({ "octo", "gitcommit", "markdown" }, vim.bo.filetype)
+				end,
+				opts = {
+					commit = {
+						-- You may want to customize when it should be enabled
+						-- The default will enable this when `git` is found and `cwd` is in a git repository
+						-- enable = function() end
+						-- You may want to change the triggers
+						-- triggers = { ':' },
+					},
+					git_centers = {
+						github = {
+							-- Those below have the same fields with `commit`
+							-- Those features will be enabled when `git` and `gh` (or `curl`) are found and
+							-- remote contains `github.com`
+							-- issue = {
+							--     get_token = function() return '' end,
+							-- },
+							-- pull_request = {
+							--     get_token = function() return '' end,
+							-- },
+							-- mention = {
+							--     get_token = function() return '' end,
+							--     get_documentation = function(item)
+							--         local default = require('blink-cmp-git.default.github')
+							--             .mention.get_documentation(item)
+							--         default.get_token = function() return '' end
+							--         return default
+							--     end
+							-- }
+						},
+						gitlab = {
+							-- Those below have the same fields with `commit`
+							-- Those features will be enabled when `git` and `glab` (or `curl`) are found and
+							-- remote contains `gitlab.com`
+							-- issue = {
+							--     get_token = function() return '' end,
+							-- },
+							-- NOTE:
+							-- Even for `gitlab`, you should use `pull_request` rather than`merge_request`
+							-- pull_request = {
+							--     get_token = function() return '' end,
+							-- },
+							-- mention = {
+							--     get_token = function() return '' end,
+							--     get_documentation = function(item)
+							--         local default = require('blink-cmp-git.default.gitlab')
+							--            .mention.get_documentation(item)
+							--         default.get_token = function() return '' end
+							--         return default
+							--     end
+							-- }
+						}
+					}
+				},
+			},
 		},
 	},
 
@@ -55,7 +169,7 @@ require("blink.cmp").setup({
 			auto_show = true,
 			draw = {
 				columns = {
-					{ "kind_icon" }, { "label", "label_description", gap = 1 }
+					{ "kind_icon" }, { "label", "label_description", gap = 1 },
 				},
 
 				components = {
@@ -112,15 +226,4 @@ require("blink.cmp").setup({
 			border = "solid",
 		}
 	},
-
-
-	keymap = {
-		preset = "default",
-
-		["<C-p>"] = { "select_prev", "fallback" },
-		["<C-n>"] = { "select_next", "fallback" },
-		["<C-e>"] = { "hide" },
-		["<S-Tab>"] = { "select_and_accept" },
-		["<C-Space>"] = { "show" },
-	}
 });

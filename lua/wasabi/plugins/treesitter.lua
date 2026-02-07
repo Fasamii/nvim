@@ -1,11 +1,11 @@
 if vim.fn.executable("tree-sitter") ~= 1 then
-	vim.schedule(function()
-		vim.notify(
-			"Tree-sitter CLI not found!\nInstall 'tree-sitter-cli' to enable parser compilation.",
-			vim.log.levels.ERROR,
-			{ title = "Tree-sitter" }
-		)
-	end)
+	require("wasabi.util").notify(
+		"Tree-sitter CLI not found!\nInstall 'tree-sitter-cli' to enable parser compilation.",
+		vim.log.levels.ERROR,
+		{ title = "Tree-sitter" }
+	);
+
+	return;
 end
 
 local parsers = {
@@ -40,14 +40,10 @@ local parsers = {
 	"markdown_inline",
 };
 
-local ok, ts = pcall(require, "nvim-treesitter")
-if ok then
+local ts_ok, ts = pcall(require, "nvim-treesitter")
+if ts_ok then
 	local ts_path = vim.fn.stdpath("data") .. "/site";
-
-	ts.setup({
-		install_dir = ts_path,
-	});
-
+	ts.setup({ install_dir = ts_path });
 	ts.install(parsers, { summary = false });
 end
 
@@ -60,3 +56,23 @@ vim.api.nvim_create_autocmd("FileType", {
 		end
 	end,
 });
+
+local tsto_ok, tsto = pcall(require, "nvim-treesitter-textobjects");
+if tsto_ok then
+	tsto.setup({
+		select = {
+			enable = true,
+			lookahead = true,
+			selection_modes = {
+				['@parameter.outer'] = 'v',
+				['@function.outer'] = 'V',
+				['@class.outer'] = 'V',
+			},
+			include_surrounding_whitespace = false,
+		},
+	});
+
+	require("wasabi.keymaps").treesitter(
+		require("nvim-treesitter-textobjects.select")
+	);
+end
