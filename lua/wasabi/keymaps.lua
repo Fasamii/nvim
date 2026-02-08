@@ -20,6 +20,8 @@ set("v", ">", ">gv", "indent right without removing highlight");
 set("n", "co", "o<Esc>Vcx<Esc><cmd>normal gcc<cr>fxa<bs>", "add comment below");
 set("n", "cO", "O<Esc>Vcx<Esc><cmd>normal gcc<cr>fxa<bs>", "add comment above");
 
+set("v", "o", "\"_dP", "Override");
+
 -- BUFFER OPERATIONS
 
 set("n", "<leader>fv", function()
@@ -69,7 +71,7 @@ set("n", "zr", function()
 	vim.cmd("normal! zug");
 end, "Remove word from dictionary");
 
--- PWD
+-- CWD
 
 set("n", "<leader>cd", function()
 	local current_file = vim.fn.expand("%:p:h");
@@ -276,8 +278,8 @@ function M.lsp_attach(bufnr)
 	end, "format document")
 
 	-- DIAGNOSTICS
-	-- buf_set("n", "<leader>cd", vim.diagnostic.open_float, "show diagnostic")
-	buf_set("n", "<leader>cq", vim.diagnostic.setloclist, "diagnostics to loclist")
+	buf_set("n", "<leader>se", vim.diagnostic.open_float, "show diagnostic")
+	-- buf_set("n", "<leader>cq", vim.diagnostic.setloclist, "diagnostics to loclist")
 
 	-- WORKSPACE
 	buf_set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, "add workspace folder")
@@ -285,6 +287,13 @@ function M.lsp_attach(bufnr)
 	-- buf_set("n", "<leader>wl", function()
 	-- 	print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 	-- end, "list workspace folders")
+end
+
+function M.sniprun()
+	set("n", "<leader>cr", "<cmd>SnipRun<CR>", "Run under cursor")
+	set("v", "<leader>cr", ":'<,'>SnipRun<CR>", "Run selection")
+	set("n", "<leader>dc", "<cmd>SnipClose<CR>", "Run selection")
+	set("n", "<leader>dr", "<cmd>SnipReset<CR>", "Run selection")
 end
 
 return M;

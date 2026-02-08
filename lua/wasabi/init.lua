@@ -122,3 +122,4 @@ safe_require("wasabi.plugins.auto-session");
 safe_require("wasabi.plugins.markdown");
 safe_require("wasabi.lsp");
 safe_require("wasabi.plugins.indent-blankline");
+safe_require("wasabi.plugins.sniprun");
