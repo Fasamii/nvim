@@ -25,11 +25,6 @@ set("n", "cO", "O<Esc>Vcx<Esc><cmd>normal gcc<cr>fxa<bs>", "add comment above");
 set("n", "<leader>fv", function()
 	vim.cmd("normal! ggVG");
 end, "Select entire buffer");
-set("n", "<leader>fy", function()
-	local pos = vim.fn.getpos(".");
-	vim.cmd("normal! ggVG\"+y");
-	vim.fn.setpos(".", pos);
-end, "Copy entire buffer");
 
 set("n", "<leader>rb", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
 	"Replace word under cursor for this buffer");
@@ -254,8 +249,9 @@ function M.todo_comments()
 end
 
 function M.auto_session()
-	set("n", "<leader>ss", "<cmd>Autosession save<CR>", "save session");
-	set("n", "<leader>rs", "<cmd>SessionRestore<CR>", "restore session");
+	set("n", "<leader>ss", "<cmd>AutoSession save<CR>", "Save session");
+	set("n", "<leader>sr", "<cmd>AutoSession restore<CR>", "Restore session");
+	set("n", "<leader>sd", "<cmd>AutoSession delete<CR>", "Delete session");
 end
 
 function M.lsp_attach(bufnr)

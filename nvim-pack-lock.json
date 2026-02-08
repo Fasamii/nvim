@@ -113,6 +113,10 @@
       "rev": "ff73799fc8df725d51eada87a113581ba4d3717b",
       "src": "https://github.com/b0o/schemastore.nvim"
     },
+    "sniprun": {
+      "rev": "c091976ec5dbb0c6587f621657892174fe3dd691",
+      "src": "https://github.com/michaelb/sniprun.git"
+    },
     "sobsob.nvim": {
       "rev": "2e72d3fb3400474656588521e2f3a71fee494605",
       "src": "https://github.com/Fasamii/sobsob.nvim"

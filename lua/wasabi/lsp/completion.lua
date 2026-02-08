@@ -25,7 +25,7 @@ require("blink.cmp").setup({
 			lsp = {
 				name = "LSP",
 				module = "blink.cmp.sources.lsp",
-				score_offset = 100,
+				score_offset = 90,
 			},
 
 			path = {
@@ -59,7 +59,20 @@ require("blink.cmp").setup({
 			datword = {
 				name = "Word",
 				module = "blink-cmp-dat-word",
-				score_offset = 5,
+				-- TODO: Check if you really need that
+				score_offset = function()
+					local ok, ts_utils = pcall(require, "nvim-treesitter.ts_utils");
+					if ok then
+						local node = ts_utils.get_node_at_cursor();
+						while node do
+							if node:type() == "comment" then
+								return 80;
+							end
+							node = node:parent();
+						end
+					end
+					return 5;
+				end,
 				opts = {
 					spellsuggest = true,
 					paths = {
@@ -71,6 +84,7 @@ require("blink.cmp").setup({
 			latex = {
 				name = "Latex",
 				module = "blink-cmp-latex",
+				score_offset = 100,
 				opts = {
 					-- set to true to insert the latex command instead of the symbol
 					insert_command = true,

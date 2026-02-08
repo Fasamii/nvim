@@ -301,3 +301,12 @@ vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()";
 
 -- TODO: Check what that is
 vim.o.shada = "'100,<50,s10,:1000,/100,@100,h";
+
+-- Remove the legacy features
+vim.g.loaded_python3_provider = 0;
+vim.g.loaded_perl_provider = 0;
+vim.g.loaded_ruby_provider = 0;
+vim.g.loaded_node_provider = 0;
+
+-- auto-session
+vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"

@@ -3,3 +3,4 @@ if vim.loader then
 end
 
 require("wasabi");
+require("shadow-usercmds");

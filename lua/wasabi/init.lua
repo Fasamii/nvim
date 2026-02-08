@@ -88,6 +88,9 @@ vim.pack.add({
 		version = vim.version.range("1.8.0")
 	},
 
+	-- Debuggin
+	{ src = "https://github.com/michaelb/sniprun.git" },
+
 	-- Startup time measuring
 	-- (n)vim --startuptime logfile
 	{ src = "https://github.com/dstein64/vim-startuptime.git" },
