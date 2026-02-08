@@ -290,10 +290,9 @@ function M.lsp_attach(bufnr)
 end
 
 function M.sniprun()
-	set("n", "<leader>cr", "<cmd>SnipRun<CR>", "Run under cursor")
-	set("v", "<leader>cr", ":'<,'>SnipRun<CR>", "Run selection")
+	set("n", "<leader>dr", "<cmd>SnipRun<CR>", "Run under cursor")
+	set("v", "<leader>dr", ":'<,'>SnipRun<CR>", "Run selection")
 	set("n", "<leader>dc", "<cmd>SnipClose<CR>", "Run selection")
-	set("n", "<leader>dr", "<cmd>SnipReset<CR>", "Run selection")
 end
 
 return M;

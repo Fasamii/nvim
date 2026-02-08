@@ -70,11 +70,10 @@ require("todo-comments").setup({
 		exclude = {},              -- list of file types to exclude highlighting
 	},
 	colors = {
-		ok = { "Ok" },
-		info = { "Info" },
-		hint = { "Hint" },
-		warn = { "Warn" },
-		error = { "Error" },
+		info = { "DiagnosticInfo" },
+		hint = { "DiagnosticHint" },
+		warn = { "DiagnosticWarn" },
+		error = { "DiagnosticError" },
 	},
 	search = {
 		command = "rg",
