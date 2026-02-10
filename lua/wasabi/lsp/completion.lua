@@ -1,13 +1,14 @@
 require("blink.cmp").setup({
 	-- TODO: Find a way to put that in keymaps.lua file
 	keymap = {
-		preset = "default",
-
 		["<C-p>"] = { "select_prev", "fallback" },
 		["<C-n>"] = { "select_next", "fallback" },
 		["<C-e>"] = { "hide" },
 		["<S-Tab>"] = { "select_and_accept" },
 		["<C-Space>"] = { "show" },
+
+		["<C-k>"] = { "scroll_documentation_up", "fallback" },
+		["<C-j>"] = { "scroll_documentation_down", "fallback" },
 	},
 
 	appearance = {
@@ -223,6 +224,7 @@ require("blink.cmp").setup({
 		documentation = {
 			auto_show = true,
 			auto_show_delay_ms = 0,
+			treesitter_highlighting = true,
 			window = {
 				border = "solid"
 			}

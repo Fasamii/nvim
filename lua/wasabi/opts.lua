@@ -140,7 +140,7 @@ vim.g.editorconfig = true;
 vim.g.netrw_banner = 0;
 -- Directory listing style
 -- 0 = simple, 1 = detailed, 2 = wide, 3 = tree view
-vim.g.netrw_liststyle = 3;
+vim.g.netrw_liststyle = 0;
 -- netrw window size as a percentage of the screen width
 vim.g.netrw_winsize = 8;
 -- Sorting method: "name", "time", "size", "ext"
@@ -191,7 +191,7 @@ vim.diagnostic.config({
 	severity_sort = true,
 	-- Floating diagnostic window appearance
 	float = {
-		focusable = false,
+		focusable = true,
 		style = "minimal",
 		border = "solid",
 		source = true,
@@ -280,24 +280,11 @@ if vim.g.neovide then
 	vim.g.neovide_input_ime = false;
 end
 
-
-
-
-
-vim.wo[0][0].foldmethod = "expr";
-vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()";
--- vim.wo[0][0].fillchars = "foldopen:▪";
-vim.wo[0][0].foldminlines = 3;
-
 -- Delays redraws during macros and scripts
 vim.opt.lazyredraw = false;
 
-vim.opt.smoothscroll = true;
+-- vim.opt.smoothscroll = true;
 
--- TODO: Check if that is correct
--- Indentation support through Treesitter
-vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()";
--- Fold support through Treesitter
 
 -- TODO: Check what that is
 vim.o.shada = "'100,<50,s10,:1000,/100,@100,h";

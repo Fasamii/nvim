@@ -104,6 +104,7 @@ vim.cmd.colorscheme("sobsob");
 safe_require("wasabi.opts");
 safe_require("wasabi.keymaps");
 safe_require("wasabi.autocmds");
+safe_require("wasabi.folds");
 
 safe_require("wasabi.plugins.treesitter");
 safe_require("wasabi.plugins.nvim-web-devicons");

@@ -150,12 +150,13 @@ function M.treesitter(select)
 		select.select_textobject("@loop.inner", "textobjects")
 	end, "Select inner loop")
 
-	set({ "x", "o" }, "ab", function()
-		select.select_textobject("@block.outer", "textobjects")
-	end, "Select outer block")
-	set({ "x", "o" }, "ib", function()
-		select.select_textobject("@block.inner", "textobjects")
-	end, "Select inner block")
+	-- TODO: Find better keymap for that
+	-- set({ "x", "o" }, "ab", function()
+	-- 	select.select_textobject("@block.outer", "textobjects")
+	-- end, "Select outer block")
+	-- set({ "x", "o" }, "ib", function()
+	-- 	select.select_textobject("@block.inner", "textobjects")
+	-- end, "Select inner block")
 
 	set({ "x", "o" }, "a/", function()
 		select.select_textobject("@comment.outer", "textobjects")
@@ -294,5 +295,8 @@ function M.sniprun()
 	set("v", "<leader>dr", ":'<,'>SnipRun<CR>", "Run selection")
 	set("n", "<leader>dc", "<cmd>SnipClose<CR>", "Run selection")
 end
+
+set({ "n", "i" }, "<C-k>", "<C-b>", "Scroll docs up");
+set({ "n", "i" }, "<C-j>", "<C-f>", "Scroll docs down");
 
 return M;

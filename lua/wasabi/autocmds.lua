@@ -7,14 +7,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end
 })
 
--- vim.api.nvim_create_autocmd({ "BufWinEnter", "WinEnter", "WinLeave" }, {
--- 	desc = "Cursorline only in active window",
--- 	callback = function(args)
--- 		if vim.bo[args.buf].buftype ~= "" then return end
--- 		vim.opt_local.cursorline = args.event ~= "WinLeave"
--- 	end,
--- })
-
 local function guess_the_indent(bufnr)
 	if not vim.api.nvim_buf_is_valid(bufnr) or vim.bo[bufnr].buftype ~= "" then return end
 
@@ -55,4 +47,78 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 	callback = function(ctx)
 		vim.defer_fn(function() guess_the_indent(ctx.buf) end, 100)
 	end,
+})
+
+-- Do not pollute buffer list with terminal buffers
+-- Close terminal after exit if status code is 0
+local keep_open = {
+	{ "cargo", "run" },
+	{ "cargo", "check" },
+};
+
+local function parse_command(cmd)
+	local words = vim.split(cmd, "%s+")
+	local non_flag_words = {};
+
+	for _, word in ipairs(words) do
+		if not word:match("^%-") then
+			table.insert(non_flag_words, word);
+		end
+	end
+
+	return non_flag_words;
+end
+
+local function should_keep_open(words)
+	for _, keep_open_word in ipairs(keep_open) do
+		local matches = true;
+
+		for i, part in ipairs(keep_open_word) do
+			if words[i] ~= part then
+				matches = false;
+				break;
+			end
+		end
+
+		if matches and #keep_open_word > 0 then
+			return true;
+		end
+	end
+
+	return false;
+end
+
+vim.api.nvim_create_autocmd("TermOpen", {
+	callback = function(args)
+		vim.bo[args.buf].buflisted = false
+		vim.bo[args.buf].bufhidden = "wipe";
+
+		local bufname = vim.api.nvim_buf_get_name(args.buf);
+		local cmd = bufname:match("term://.*//[0-9]+:(.*)");
+
+		if cmd and should_keep_open(parse_command(cmd)) then
+			vim.b[args.buf].keep_open = true;
+		end
+	end,
+})
+
+vim.api.nvim_create_autocmd("TermClose", {
+	callback = function(args)
+		local bufnr = args.buf;
+		local ev = vim.v.event;
+
+		if ev.status ~= 0 then
+			return;
+		end
+
+		if vim.api.nvim_buf_is_valid(bufnr) and vim.b[bufnr].keep_open then
+			return;
+		end
+
+		for _, win in ipairs(vim.fn.win_findbuf(bufnr)) do
+			if vim.api.nvim_win_is_valid(win) then
+				vim.api.nvim_win_close(win, false);
+			end
+		end
+	end
 })
