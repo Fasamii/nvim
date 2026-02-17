@@ -1,11 +1,13 @@
 vim.opt.foldmethod = "expr";
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()";
 
-vim.opt.foldminlines = 3;
 vim.opt.foldlevel = 99;
+vim.opt.foldenable = true;
+vim.opt.foldminlines = 3;
 
 
 vim.opt.foldtext = "";
+
 -- SHIT IS FUCKING BROKEN
 -- ·················· that cool fold char
 -- vim.opt.foldtext = "v:lua.CustomFoldText()"

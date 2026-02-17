@@ -184,7 +184,9 @@ vim.diagnostic.config({
 	-- Full-width virtual lines
 	virtual_lines = { severity = { min = vim.diagnostic.severity.ERROR } },
 	-- Diagnostic underlines
-	underline = false,
+	underline = {
+		severity = { min = vim.diagnostic.severity.WARN },
+	},
 	-- Update diagnostics while typing
 	update_in_insert = false,
 	-- Sort diagnostics by severity

@@ -253,7 +253,7 @@ end
 
 function M.auto_session()
 	set("n", "<leader>ss", "<cmd>AutoSession save<CR>", "Save session");
-	set("n", "<leader>sr", "<cmd>AutoSession restore<CR>", "Restore session");
+	-- set("n", "<leader>sr", "<cmd>AutoSession restore<CR>", "Restore session");
 	set("n", "<leader>sd", "<cmd>AutoSession delete<CR>", "Delete session");
 end
 
