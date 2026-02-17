@@ -1,5 +1,5 @@
 require("mason").setup({
-	log_level = vim.log.levels.WARN,
+	log_level = vim.log.levels.OFF,
 
 	max_concurrent_installers = 4,
 
@@ -10,7 +10,7 @@ require("mason").setup({
 		icons = {
 			package_installed = "󱗜 ",
 			package_pending = "󰌴 ",
-			package_unsinstalled = "󰅗 ",
+			package_uninstalled = "󰅗 ",
 		},
 	},
 });
@@ -19,7 +19,9 @@ require("mason-lspconfig").setup({
 	ensure_installed = {
 		"bashls",
 		"rust_analyzer",
+		"glsl_analyzer",
 		"clangd",
+		"asm_lsp",
 		"ts_ls",
 		"pyright",
 		"lua_ls",

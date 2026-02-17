@@ -1,57 +1,59 @@
 require("wasabi.lsp.servers");
 require("wasabi.lsp.completion")
 
+vim.lsp.log.set_level(vim.log.levels.OFF);
+
 local capabilities = vim.lsp.protocol.make_client_capabilities();
 capabilities = require("blink.cmp").get_lsp_capabilities(capabilities);
-capabilities.workspace = capabilities.workspace or {};
-capabilities.workspace.didChangeWatchedFiles = {
-	dynamicRegistration = true,
-	relativePatternSupport = true,
+
+capabilities.textDocument.foldingRange = {
+	dynamicRegistration = false,
+	lineFoldingOnly = true,
 }
 
-local on_attach = function(client, bufnr)
-	vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
+capabilities.textDocument.hover = {
+	contentFormat = { "markdown", "plaintext" },
+	dynamicRegistration = false,
+}
 
-	require("wasabi.keymaps").lsp_attach(bufnr);
+capabilities.textDocument.semanticTokens = vim.tbl_deep_extend("force", capabilities.textDocument.semanticTokens or {}, {
+	dynamicRegistration = false,
+	requests = {
+		full = { delta = true },
+		range = true,
+	},
+	multilineTokenSupport = true,
+	overlappingTokenSupport = false,
+});
 
-	-- Inlay hints (0.10+)
-	if client.server_capabilities.inlayHintProvider then
-		vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-	end
+capabilities.workspace = vim.tbl_deep_extend("force", capabilities.workspace or {}, {
+	didChangeWatchedFiles = {
+		dynamicRegistration = true,
+		relativePatternSupport = true,
+	},
+	fileOperations = {
+		didCreate = true,
+		didRename = true,
+		didDelete = true,
+		willCreate = true,
+		willRename = true,
+		willDelete = true,
+	},
+	symbol = {
+		resolveSupport = {
+			properties = { "location", "documentation", "range" }
+		}
+	}
+});
 
-	-- CodeLens
-	if client.server_capabilities.codeLensProvider then
-		local codelens_group = vim.api.nvim_create_augroup("LspCodeLens_" .. bufnr, { clear = true })
-		vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
-			group = codelens_group,
-			buffer = bufnr,
-			callback = function() vim.lsp.codelens.refresh({ bufnr = bufnr }) end,
-		})
-	end
-
-	-- Document highlight (0.12+)
-	if client.server_capabilities.documentHighlightProvider then
-		local highlight_group = vim.api.nvim_create_augroup("LspDocumentHighlight_" .. bufnr, { clear = true })
-		vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-			group = highlight_group,
-			buffer = bufnr,
-			callback = function() vim.lsp.buf.document_highlight() end,
-		})
-		vim.api.nvim_create_autocmd("CursorMoved", {
-			group = highlight_group,
-			buffer = bufnr,
-			callback = function() vim.lsp.buf.clear_references() end,
-		})
-	end
-end
-
+local on_attach = require("wasabi.lsp.on-attach");
 local servers = require("wasabi.lsp.configs");
 
 for server, config in pairs(servers) do
-	config.capabilities = config.capabilities or capabilities;
+	config.capabilities = vim.tbl_deep_extend("force", capabilities, config.capabilities or {});
 	config.on_attach = on_attach;
 	vim.lsp.config(server, config);
-	vim.lsp.enable(server);
+	-- vim.lsp.enable(server); -- NOTE: mason-lspconfig automatically enables managed servers
 end
 
 local format_on_save_group = vim.api.nvim_create_augroup("FormatOnSave", { clear = true })

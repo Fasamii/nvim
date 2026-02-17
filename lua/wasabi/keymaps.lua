@@ -273,7 +273,7 @@ function M.lsp_attach(bufnr)
 	buf_set("n", "<C-k>", vim.lsp.buf.signature_help, "show signature help")
 	-- ACTIONS
 	buf_set("n", "<leader>ca", vim.lsp.buf.code_action, "code action")
-	-- buf_set("n", "<leader>cr", vim.lsp.buf.rename, "rename symbol")
+	buf_set("n", "<leader>pr", vim.lsp.buf.rename, "rename symbol")
 	buf_set("n", "<leader>cf", function()
 		vim.lsp.buf.format({ async = true })
 	end, "format document")

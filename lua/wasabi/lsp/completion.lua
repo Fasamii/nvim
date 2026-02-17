@@ -1,4 +1,9 @@
+local ts_ok, ts_utils = pcall(require, "nvim-treesitter.ts_utils");
+
 require("blink.cmp").setup({
+	enabled = function()
+		return not vim.tbl_contains({ "glsl" }, vim.bo.filetype)
+	end,
 	-- TODO: Find a way to put that in keymaps.lua file
 	keymap = {
 		["<C-p>"] = { "select_prev", "fallback" },
@@ -62,8 +67,7 @@ require("blink.cmp").setup({
 				module = "blink-cmp-dat-word",
 				-- TODO: Check if you really need that
 				score_offset = function()
-					local ok, ts_utils = pcall(require, "nvim-treesitter.ts_utils");
-					if ok then
+					if ts_ok then
 						local node = ts_utils.get_node_at_cursor();
 						while node do
 							if node:type() == "comment" then
@@ -85,7 +89,7 @@ require("blink.cmp").setup({
 			latex = {
 				name = "Latex",
 				module = "blink-cmp-latex",
-				score_offset = 100,
+				score_offset = 85,
 				opts = {
 					-- set to true to insert the latex command instead of the symbol
 					insert_command = true,
@@ -223,7 +227,7 @@ require("blink.cmp").setup({
 
 		documentation = {
 			auto_show = true,
-			auto_show_delay_ms = 0,
+			auto_show_delay_ms = 50,
 			treesitter_highlighting = true,
 			window = {
 				border = "solid"

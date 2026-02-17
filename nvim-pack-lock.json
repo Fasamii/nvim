@@ -93,6 +93,10 @@
       "rev": "a0e182ae21fda68c59d1f36c9ed45600aef50311",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects.git"
     },
+    "nvim-ufo": {
+      "rev": "ab3eb124062422d276fae49e0dd63b3ad1062cfc",
+      "src": "https://github.com/kevinhwang91/nvim-ufo"
+    },
     "nvim-web-devicons": {
       "rev": "746ffbb17975ebd6c40142362eee1b0249969c5c",
       "src": "https://github.com/nvim-tree/nvim-web-devicons"
@@ -122,7 +126,7 @@
       "src": "https://github.com/michaelb/sniprun.git"
     },
     "sobsob.nvim": {
-      "rev": "2e72d3fb3400474656588521e2f3a71fee494605",
+      "rev": "566835ac80c130f02416f980fc913fb17f484242",
       "src": "https://github.com/Fasamii/sobsob.nvim"
     },
     "telescope.nvim": {

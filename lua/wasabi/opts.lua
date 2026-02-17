@@ -140,7 +140,7 @@ vim.g.editorconfig = true;
 vim.g.netrw_banner = 0;
 -- Directory listing style
 -- 0 = simple, 1 = detailed, 2 = wide, 3 = tree view
-vim.g.netrw_liststyle = 0;
+vim.g.netrw_liststyle = 3;
 -- netrw window size as a percentage of the screen width
 vim.g.netrw_winsize = 8;
 -- Sorting method: "name", "time", "size", "ext"
@@ -173,7 +173,7 @@ vim.diagnostic.config({
 		format = function(diag)
 			return diag.message:gsub("%.$", ""); -- remove trailing `.` from lua_ls
 		end,
-		prefixx = "[!]",
+		prefix = "",
 		suffix = function(diag)
 			if not diag then return "" end
 			local codeOrSource = (tostring(diag.code or diag.source or ""))

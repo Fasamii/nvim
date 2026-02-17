@@ -21,6 +21,7 @@ local parsers = {
 	"tsx",
 
 	"bash",
+	"zsh",
 	"lua",
 	"luadoc",
 	"python",
@@ -38,6 +39,8 @@ local parsers = {
 
 	"markdown",
 	"markdown_inline",
+
+	"glsl",
 };
 
 local ts_ok, ts = pcall(require, "nvim-treesitter")
