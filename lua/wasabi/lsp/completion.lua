@@ -26,7 +26,7 @@ require("blink.cmp").setup({
 	},
 
 	sources = {
-		default = { "lsp", "path", "buffer", "env", "datword", "latex", "git" },
+		default = { "lsp", "path", "buffer", "env", "datword", "latex", "git", "cmdline" },
 		providers = {
 			lsp = {
 				name = "LSP",
@@ -157,6 +157,19 @@ require("blink.cmp").setup({
 				},
 			},
 		},
+	},
+
+	cmdline = {
+		sources = function()
+			local type = vim.fn.getcmdtype();
+			if type == "/" or type == "?" then
+				return { "buffer" }
+			end
+			if type == ":" then
+				return { "cmdline", "path" }
+			end
+			return {};
+		end
 	},
 
 	completion = {

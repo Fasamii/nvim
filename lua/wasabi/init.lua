@@ -42,8 +42,6 @@ vim.pack.add({
 	-- Treesitter
 	{ src = "https://github.com/nvim-treesitter/nvim-treesitter" },
 	{ src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects.git" },
-	-- Folds
-	{ src = "https://github.com/kevinhwang91/nvim-ufo" },
 	-- Injections
 	{ src = "https://github.com/Fasamii/embed.nvim" },
 
@@ -109,7 +107,6 @@ safe_require("wasabi.autocmds");
 safe_require("wasabi.folds");
 
 safe_require("wasabi.plugins.treesitter");
--- safe_require("wasabi.plugins.ufo");
 safe_require("wasabi.plugins.nvim-web-devicons");
 safe_require("wasabi.plugins.numb");
 
