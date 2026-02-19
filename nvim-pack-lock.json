@@ -54,7 +54,7 @@
       "src": "https://github.com/Thiago4532/mdmath.nvim.git"
     },
     "netrw-icons.nvim": {
-      "rev": "b72d585866564779e93bff98dcc5b389ae88653c",
+      "rev": "85c6d741d0aa27a4cc419b5af04e0f8b1bc881d5",
       "src": "https://github.com/Fasamii/netrw-icons.nvim"
     },
     "numb.nvim": {
@@ -70,7 +70,7 @@
       "src": "https://github.com/alec-gibson/nvim-tetris.git"
     },
     "nvim-treesitter": {
-      "rev": "2bd9b9b4f12eed175fba35ca2db8e8584546a4ec",
+      "rev": "3edb01f912867603c2aef9079f208f0244c0885b",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "nvim-treesitter-textobjects": {
@@ -98,7 +98,7 @@
       "src": "https://github.com/michaelb/sniprun.git"
     },
     "sobsob.nvim": {
-      "rev": "06c874212683da435fd8a76733e11ed65389631b",
+      "rev": "1d444122d220c38871746b689038eedbdc55966a",
       "src": "https://github.com/Fasamii/sobsob.nvim"
     },
     "telescope.nvim": {
@@ -112,10 +112,6 @@
     "vim-startuptime": {
       "rev": "c12649b2458e34ec6dde8f1bdfe830661a613a6b",
       "src": "https://github.com/dstein64/vim-startuptime.git"
-    },
-    "which-key.nvim": {
-      "rev": "3aab2147e74890957785941f0c1ad87d0a44c15a",
-      "src": "https://github.com/folke/which-key.nvim"
     }
   }
 }
