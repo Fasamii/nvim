@@ -262,29 +262,50 @@ function M.lsp_attach(bufnr)
 		set(mode, keymap, what, desc, { buffer = bufnr });
 	end
 
+	-- TOGGLE DIAGNOSTICS
+	buf_set("n", "<leader>td", function()
+		vim.diagnostic.enable(not vim.diagnostic.is_enabled({ bufnr = bufnr }), { bufnr = bufnr })
+		local state = vim.diagnostic.is_enabled({ bufnr = bufnr }) and "enabled" or "disabled"
+		notify("Diagnostics " .. state, vim.log.levels.INFO, { title = "LSP" })
+	end, "toggle diagnostics");
+	-- TOGGLE INLAY HINTS (0.10+)
+	buf_set("n", "<leader>th", function()
+		local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr })
+		vim.lsp.inlay_hint.enable(not enabled, { bufnr = bufnr })
+		local state = not enabled and "enabled" or "disabled"
+		notify("Inlay hints " .. state, vim.log.levels.INFO, { title = "LSP" })
+	end, "toggle inlay hints")
+
+	-- DOCUMENTATION
+	buf_set("n", "K", vim.lsp.buf.hover, "show hover documentation")
+	buf_set("n", "<C-k>", vim.lsp.buf.signature_help, "show signature help")
+
+	-- ACTIONS
+	buf_set("n", "<leader>pr", vim.lsp.buf.rename, "rename symbol")
+	buf_set("n", "<leader>ca", vim.lsp.buf.code_action, "code action")
+	buf_set("n", "<leader>cf", function()
+		vim.lsp.buf.format({ async = true })
+	end, "format document")
+
 	-- NAVIGATION
 	buf_set("n", "gd", vim.lsp.buf.definition, "go to definition")
 	buf_set("n", "gD", vim.lsp.buf.declaration, "go to declaration")
 	buf_set("n", "gi", vim.lsp.buf.implementation, "go to implementation")
 	buf_set("n", "gr", vim.lsp.buf.references, "show references")
 	buf_set("n", "gt", vim.lsp.buf.type_definition, "go to type definition")
-	-- DOCUMENTATION
-	buf_set("n", "K", vim.lsp.buf.hover, "show hover documentation")
-	buf_set("n", "<C-k>", vim.lsp.buf.signature_help, "show signature help")
-	-- ACTIONS
-	buf_set("n", "<leader>ca", vim.lsp.buf.code_action, "code action")
-	buf_set("n", "<leader>pr", vim.lsp.buf.rename, "rename symbol")
-	buf_set("n", "<leader>cf", function()
-		vim.lsp.buf.format({ async = true })
-	end, "format document")
 
 	-- DIAGNOSTICS
-	buf_set("n", "<leader>se", vim.diagnostic.open_float, "show diagnostic")
-	-- buf_set("n", "<leader>cq", vim.diagnostic.setloclist, "diagnostics to loclist")
+	buf_set("n", "<leader>ce", vim.diagnostic.open_float, "show diagnostic")
 
+	buf_set("n", "<leader>cl", vim.lsp.codelens.run, "run code lens")
+
+
+
+
+	-- buf_set("n", "<leader>cq", vim.diagnostic.setloclist, "diagnostics to loclist")
 	-- WORKSPACE
-	buf_set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, "add workspace folder")
-	buf_set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, "remove workspace folder")
+	-- buf_set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, "add workspace folder")
+	-- buf_set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, "remove workspace folder")
 	-- buf_set("n", "<leader>wl", function()
 	-- 	print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 	-- end, "list workspace folders")

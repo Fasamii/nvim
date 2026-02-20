@@ -162,6 +162,8 @@ vim.opt.pumheight = 10;
 
 -- Time in milliseconds before CursorHold events and diagnostics update
 vim.opt.updatetime = 20;
+
+
 -- LSP diagnostics config
 vim.diagnostic.config({
 	severity_sort = true,
