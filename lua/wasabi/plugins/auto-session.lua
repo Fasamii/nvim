@@ -1,6 +1,6 @@
 require("auto-session").setup({
 	enabled = true,                                       -- Enables/disables auto creating, saving and restoring
-	root_dir = os.getenv("HOME") .. "/.backup/nvim/session", -- Root dir where sessions will be stored
+	root_dir = os.getenv("HOME") .. "/.local/nvim/session", -- Root dir where sessions will be stored
 	auto_save = true,                                     -- Enables/disables auto saving session on exit
 	auto_restore = true,                                  -- Enables/disables auto restoring session on start
 	auto_create = false,                                  -- Enables/disables auto creating new session files. Can take a function that should return true/false if a new session file should be created or not

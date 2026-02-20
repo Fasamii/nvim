@@ -84,7 +84,7 @@ vim.opt.splitright = true;
 -- Keep screen position on split
 vim.opt.splitkeep = "screen";
 
-local backup_dir = os.getenv("HOME") .. "/.backup/nvim";
+local backup_dir = os.getenv("HOME") .. "/.local/share/nvim/backup";
 vim.fn.mkdir(backup_dir .. "/undo", "p");
 vim.fn.mkdir(backup_dir .. "/backup", "p");
 vim.fn.mkdir(backup_dir .. "/swap", "p");
@@ -182,15 +182,16 @@ vim.diagnostic.config({
 		end,
 	},
 	-- Full-width virtual lines
-	virtual_lines = { severity = { min = vim.diagnostic.severity.ERROR } },
+	virtual_lines = {
+
+		severity = { min = vim.diagnostic.severity.ERROR },
+	},
 	-- Diagnostic underlines
 	underline = {
 		severity = { min = vim.diagnostic.severity.WARN },
 	},
 	-- Update diagnostics while typing
 	update_in_insert = false,
-	-- Sort diagnostics by severity
-	severity_sort = true,
 	-- Floating diagnostic window appearance
 	float = {
 		focusable = true,

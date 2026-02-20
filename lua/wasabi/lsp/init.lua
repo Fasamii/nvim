@@ -53,7 +53,6 @@ for server, config in pairs(servers) do
 	config.capabilities = vim.tbl_deep_extend("force", capabilities, config.capabilities or {});
 	config.on_attach = on_attach;
 	vim.lsp.config(server, config);
-	-- vim.lsp.enable(server); -- NOTE: mason-lspconfig automatically enables managed servers
 end
 
 local format_on_save_group = vim.api.nvim_create_augroup("FormatOnSave", { clear = true })

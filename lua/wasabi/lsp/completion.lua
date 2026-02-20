@@ -81,7 +81,7 @@ require("blink.cmp").setup({
 				opts = {
 					spellsuggest = true,
 					paths = {
-						"~/.config/nvim/google-10000-english/google-10000-english.txt",
+						"~/.config/nvim/google-10000-english/google-10000-english-usa.txt",
 					},
 				},
 			},

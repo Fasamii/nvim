@@ -1,15 +1,27 @@
 return {
 	rust_analyzer = {
+		handlers = {
+			["textDocument/diagnostic"] = function() end,
+		},
 		settings = {
 			["rust-analyzer"] = {
 				checkOnSave = {
 					enable = true,
 					command = "clippy",
-					extraArgs = { "--all", "--", "-W", "clippy::all" },
+					extraArgs = {
+						"--",
+						"-W", "clippy::all",
+						"-W", "clippy::pedantic",
+						"-W", "clippy::nursery",
+						"-W", "clippy::unwrap_used",
+						"-W", "clippy::expect_used",
+						"-W", "clippy::panic",
+						"-W", "clippy::todo",
+						"-W", "clippy::unimplemented",
+					},
 				},
 				cargo = {
 					allFeatures = true,
-					loadOutDirsFromCheck = true,
 					buildScripts = { enable = true },
 				},
 				procMacro = {
@@ -26,6 +38,12 @@ return {
 					parameterHints = { enable = true },
 					typeHints = { enable = true },
 				},
+				diagnostics = {
+					enable = true,
+					experimental = {
+						enable = true,
+					}
+				}
 			}
 		},
 	},
