@@ -265,15 +265,11 @@ function M.lsp_attach(bufnr)
 	-- TOGGLE DIAGNOSTICS
 	buf_set("n", "<leader>td", function()
 		vim.diagnostic.enable(not vim.diagnostic.is_enabled({ bufnr = bufnr }), { bufnr = bufnr })
-		local state = vim.diagnostic.is_enabled({ bufnr = bufnr }) and "enabled" or "disabled"
-		notify("Diagnostics " .. state, vim.log.levels.INFO, { title = "LSP" })
 	end, "toggle diagnostics");
 	-- TOGGLE INLAY HINTS (0.10+)
 	buf_set("n", "<leader>th", function()
 		local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr })
 		vim.lsp.inlay_hint.enable(not enabled, { bufnr = bufnr })
-		local state = not enabled and "enabled" or "disabled"
-		notify("Inlay hints " .. state, vim.log.levels.INFO, { title = "LSP" })
 	end, "toggle inlay hints")
 
 	-- DOCUMENTATION
