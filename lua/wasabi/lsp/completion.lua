@@ -199,9 +199,16 @@ require("blink.cmp").setup({
 		menu = {
 			enabled = true,
 			auto_show = true,
+			min_width = 10,
+			max_height = 18,
+			border = "padded",
+			direction_priority = { "s", "n" },
 			draw = {
+				gap = 1,
+				padding = { 1, 1 },
 				columns = {
-					{ "kind_icon" }, { "label", "label_description", gap = 1 },
+					{ "kind_icon" },
+					{ "label" },
 				},
 
 				components = {
@@ -210,32 +217,26 @@ require("blink.cmp").setup({
 							local icon = ctx.kind_icon
 							if vim.tbl_contains({ "Path" }, ctx.source_name) then
 								local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
-								if dev_icon then
-									icon = dev_icon
-								end
+								if dev_icon then icon = dev_icon end
 							end
-
-							return icon .. ctx.icon_gap
+							return icon
 						end,
-
-						-- Optionally, use the highlight groups from nvim-web-devicons
-						-- You can also add the same function for `kind.highlight` if you want to
-						-- keep the highlight groups in sync with the icons.
 						highlight = function(ctx)
 							local hl = ctx.kind_hl
 							if vim.tbl_contains({ "Path" }, ctx.source_name) then
 								local dev_icon, dev_hl = require("nvim-web-devicons").get_icon(ctx.label)
-								if dev_icon then
-									hl = dev_hl
-								end
+								if dev_icon then hl = dev_hl end
 							end
 							return hl
 						end,
-					}
-				}
-			},
+					},
 
-			border = "solid",
+					label = {
+						width = { fill = false, max = 40 },
+						text = function(ctx) return ctx.label end,
+					},
+				},
+			},
 		},
 
 		documentation = {
